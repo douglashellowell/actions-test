@@ -4,10 +4,21 @@ on:
   push:
     branches:
       - test
+  pull_request:
+    branches:
+      - test
 
 jobs:
-  hello_world_job:
+  print_github_context:
     runs-on: ubuntu-latest
     steps:
-      - name: Hello World
-        run: echo "Hello World"
+      - name: Print GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+  if_pr:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && github.event.action != 'closed'
+    steps:
+      - name: say hello
+        run: echo "This is a pull request"
