@@ -5,8 +5,7 @@ on:
     branches:
       - test
   pull_request:
-    branches:
-      - test
+    types: [closed]
 
 jobs:
   print_github_context:
