@@ -23,8 +23,12 @@ jobs:
         run: |
           title=$(jq -r '.title' <<< "${{ toJson(github.event.pull_request) }}")
 
+          echo "Title: $title"
+
           # Replace double quotes with escaped double quotes
           escaped_double_quotes="${title//\"/\\\"}"
+
+          echo "Escaped title: $escaped_double_quotes"
 
           # Replace single quotes with escaped single quotes
           escaped_single_quotes="${escaped_double_quotes//\'/\\\'}"
