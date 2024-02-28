@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - test
+  pull_request:
+    types: [opened, closed, reopened, synchronize]
+    branches:
+      - test
 
 jobs:
   print_github_context:
