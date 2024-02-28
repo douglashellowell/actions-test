@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - test
-  pull_request:
-    types: [closed]
 
 jobs:
   print_github_context:
@@ -15,9 +13,12 @@ jobs:
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: echo "$GITHUB_CONTEXT"
-  if_closed_pr:
-    runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request' && github.event.action == 'closed'
-    steps:
-      - name: say hello
-        run: echo "This is a merged pull request"
+      - name: print pr title
+        run: echo "${{ github.event.pull_request.title }}"
+
+        # if_closed_pr:
+  #   runs-on: ubuntu-latest
+  #   if: github.event_name == 'pull_request' && github.event.action == 'closed'
+  #   steps:
+  #     - name: say hello
+  #       run: echo "This is a merged pull request"
