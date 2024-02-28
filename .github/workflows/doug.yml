@@ -21,7 +21,7 @@ jobs:
       #   run: echo "${{ github.event.pull_request.title }}"
       - name: Perform HTTP Request
         run: |
-          title='${{ github.event.pull_request.title }}'
+          title="${{ github.event.pull_request.title }}"
 
           # Replace double quotes with escaped double quotes
           escaped_double_quotes="${title//\"/\\\"}"
