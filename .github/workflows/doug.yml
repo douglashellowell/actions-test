@@ -19,7 +19,17 @@ jobs:
         run: echo "$GITHUB_CONTEXT"
       - name: print pr title
         run: echo "${{ github.event.pull_request.title }}"
-
+      - name: Perform HTTP Request
+        run: |
+          modified_title=$(echo "${{ github.event.pull_request.title }}" | sed -e 's/"/\\\\\\"/g')
+          curl -X POST \
+              -H "Content-Type: application/json" \
+              -d "{
+                  \"title\": \"$modified_title\",
+                  \"creator\": \"${{ github.event.pull_request.user.login }}\",
+                  \"url\": \"${{ github.event.pull_request.html_url }}\"   
+                }" \
+              https://www.example.com/api/v1/pull_request
         # if_closed_pr:
   #   runs-on: ubuntu-latest
   #   if: github.event_name == 'pull_request' && github.event.action == 'closed'
