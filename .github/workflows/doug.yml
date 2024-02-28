@@ -21,7 +21,7 @@ jobs:
       #   run: echo "${{ github.event.pull_request.title }}"
       - name: Perform HTTP Request
         run: |
-          title=$(jq -r  <<< "${{ toJson(github.event.pull_request.title) }}")
+          title="${{ toJson(github.event.pull_request.title) }}"
 
           echo "Title: $title"
 
