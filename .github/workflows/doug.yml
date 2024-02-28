@@ -21,11 +21,20 @@ jobs:
       #   run: echo "${{ github.event.pull_request.title }}"
       - name: Perform HTTP Request
         run: |
-          modified_title=$(sed -e 's/\"/\\\\\\"/g' -e "s/'/\\'/g" <<< ${{ github.event.pull_request.title }})
+          title='${{ github.event.pull_request.title }}'
+
+          # Replace double quotes with escaped double quotes
+          escaped_double_quotes="${title//\"/\\\"}"
+
+          # Replace single quotes with escaped single quotes
+          escaped_single_quotes="${escaped_double_quotes//\'/\\\'}"
+
+          echo "Escaped title: $escaped_single_quotes"
+
           curl -X POST \
               -H "Content-Type: application/json" \
               -d "{
-                  \"title\": \"$modified_title\",
+                  \"title\": \"$escaped_single_quotes\",
                   \"creator\": \"${{ github.event.pull_request.user.login }}\",
                   \"url\": \"${{ github.event.pull_request.html_url }}\"   
                 }" \
