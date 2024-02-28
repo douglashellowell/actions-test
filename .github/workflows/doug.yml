@@ -21,19 +21,12 @@ jobs:
       #   run: echo "${{ github.event.pull_request.title }}"
       - name: Perform HTTP Request
         run: |
+
           title=${{ toJson(github.event.pull_request.title) }}
-
-          echo "Title: $title"
-
-          # Replace double quotes with escaped double quotes
-          escaped_double_quotes="${title//\"/\\\"}"
-
-          echo "Escaped title: $escaped_double_quotes"
 
           # Replace single quotes with escaped single quotes
           escaped_single_quotes="${escaped_double_quotes//\'/\\\'}"
 
-          echo "Escaped title: $escaped_single_quotes"
 
           curl -X POST \
               -H "Content-Type: application/json" \
