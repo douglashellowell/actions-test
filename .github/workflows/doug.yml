@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - test
+  pull_request:
+    types: [opened, closed, reopened, synchronize, edited]
+    branches:
+      - test
 
 jobs:
   print_github_context:
@@ -13,9 +17,25 @@ jobs:
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: echo "$GITHUB_CONTEXT"
-      - name: print pr title
-        run: echo "${{ github.event.pull_request.title }}"
+      # - name: print pr title
+      #   run: echo "${{ github.event.pull_request.title }}"
+      - name: Perform HTTP Request
+        run: |
 
+          title=${{ toJson(github.event.pull_request.title) }}
+
+          # Replace single quotes with escaped single quotes
+          escaped_single_quotes="${escaped_double_quotes//\'/\\\'}"
+
+
+          curl -X POST \
+              -H "Content-Type: application/json" \
+              -d "{
+                  \"title\": \"$escaped_single_quotes\",
+                  \"creator\": \"${{ github.event.pull_request.user.login }}\",
+                  \"url\": \"${{ github.event.pull_request.html_url }}\"   
+                }" \
+              https://www.example.com/api/v1/pull_request
         # if_closed_pr:
   #   runs-on: ubuntu-latest
   #   if: github.event_name == 'pull_request' && github.event.action == 'closed'
