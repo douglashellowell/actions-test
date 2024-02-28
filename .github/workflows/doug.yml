@@ -17,8 +17,8 @@ jobs:
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: echo "$GITHUB_CONTEXT"
-      - name: print pr title
-        run: echo "${{ github.event.pull_request.title }}"
+      # - name: print pr title
+      #   run: echo "${{ github.event.pull_request.title }}"
       - name: Perform HTTP Request
         run: |
           modified_title=$(sed -e 's/\"/\\\\\\"/g' -e "s/'/\\'/g" <<< ${{ github.event.pull_request.title }})
