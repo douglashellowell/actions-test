@@ -22,6 +22,7 @@ jobs:
       - name: Perform HTTP Request
         run: |
           modified_title=$(echo "${{ github.event.pull_request.title }}" | sed -e 's/"/\\\\\\"/g')
+          echo $modified_title
           curl -X POST \
               -H "Content-Type: application/json" \
               -d "{
